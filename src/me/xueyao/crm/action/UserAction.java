@@ -43,6 +43,23 @@ public class UserAction extends ActionSupport implements ModelDriven<SysUser>{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 处理用户登录请求
+	 * @return
+	 */
+	@Action(value="user_login",results={@Result(name="success", location="/index.jsp"),@Result(name="login",location="/login.jsp")})
+	public String login() {
+		SysUser u = userService.login(user);
+		if (null != u) {
+			//登录成功，跳转到index.jsp
+			return SUCCESS;
+		} else {
+			//登录失败，跳转到login.jsp
+			this.addActionError("登录名或密码错误");
+			return LOGIN;
+		}
+	}
+	
 	
 	@Override
 	public SysUser getModel() {

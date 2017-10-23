@@ -21,5 +21,11 @@ public class UserServiceImpl implements UserService{
 		user.setUser_state("1");
 		userDao.save(user);
 	}
+	
+	@Transactional(readOnly=true)
+	@Override
+	public SysUser login(SysUser user) {
+		return userDao.login(user);
+	}
 
 }

@@ -9,4 +9,11 @@ public interface UserService {
 	 * @param user
 	 */
 	public void saveUser(SysUser user);
+
+	/**
+	 * 用户登录
+	 * @param user
+	 * @return
+	 */
+	public SysUser login(SysUser user);
 }
