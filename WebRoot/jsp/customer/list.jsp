@@ -15,49 +15,112 @@
 	src="${pageContext.request.contextPath}/js/jquery.easyui.min.js"></script>
 <META content="MSHTML 6.00.2900.3492" name=GENERATOR>
 <script type="text/javascript">
-
+	
+	//获取级别name
+	function getLevelName(value,row,index) {
+		if (row.baseDictLevel) {
+			return row.baseDictLevel.dict_item_name;
+		}
+	}
+	//获取来源name
+	function getSourceName(value,row,index) {
+		if (row.baseDictSource) {
+			return row.baseDictSource.dict_item_name;
+		}
+	}
+	
+	//获取行业name
+	function getIndustryName(value,row,index) {
+		if (row.baseDictIndustry) {
+			return row.baseDictIndustry.dict_item_name;
+		}
+	}
+	//页面加载完成初始化table
 	$(function() {
 		$('#dg')
 				.datagrid(
 						{
-							url : '${pageContext.request.contextPath}/customer/CustomerServlet?method=listCustomer',
+							url : '${pageContext.request.contextPath}/customer/customer_list.action',
 							columns : [ [ {
-								field : 'custName',
+								field : 'cust_name',
 								title : '客户名称',
 								width:100
 							}, {
-								field : 'custLevel',
+								field : 'baseDictLevel.dict_item_name',
 								title : '客户级别',
+								formatter: getLevelName,
 								width:100
 							}, {
-								field : 'custSource',
+								field : 'baseDictSource.dict_item_name',
 								title : '客户来源',
+								formatter: getSourceName,
 								width:100
 							}, {
-								field : 'custIndustry',
+								field : 'baseDictIndustry.dict_item_name',
 								title : '所属行业',
+								formatter: getIndustryName,
 								width:100
 							}, {
-								field : 'custAddress',
+								field : 'cust_address',
 								title : '联系地址',
 								width:100
 							}, {
-								field : 'custPhone',
+								field : 'cust_phone',
 								title : '联系电话',
 								width:100
 							} ] ],
 							fitColumns:true
 						});
-
+		//查询所属行业
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath }/baseDict/baseDict_findByTypeCode.action",
+			data:"dict_type_code=001",
+			dataType:"json",
+			success:function(msg){
+				for(var i=0; i<msg.length; i++) {
+					$("#cust_industry").append("<option value='"+msg[i].dict_id+"'>"+msg[i].dict_item_name+"</option>");
+					
+				}
+			}
+		});
+		
+		//查询信息来源
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath }/baseDict/baseDict_findByTypeCode.action",
+			data:"dict_type_code=002",
+			dataType:"json",
+			success:function(msg){
+				for(var i=0; i<msg.length; i++) {
+					$("#cust_source").append("<option value='"+msg[i].dict_id+"'>"+msg[i].dict_item_name+"</option>");
+					
+				}
+			}
+		});
+		
+		//查询级别
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath }/baseDict/baseDict_findByTypeCode.action",
+			data:"dict_type_code=006",
+			dataType:"json",
+			success:function(msg){
+				for(var i=0; i<msg.length; i++) {
+					$("#cust_level").append("<option value='"+msg[i].dict_id+"'>"+msg[i].dict_item_name+"</option>");
+					
+				}
+			}
+		});
 	});
 	
 	//点击搜索按钮执行的函数
 	function doSearch() {
 		$('#dg').datagrid('load', {
-			'custName' : $('#cust_name').val(),
-			'custLevel' : $('#cust_level').val(),
-			'custSource' : $('#cust_source').val(),
-			'custIndustry' : $('#cust_industry').val()
+			'cust_name' : $('#cust_name').val(),
+			'cust_level' : $('#cust_level').val(),
+			'cust_source' : $('#cust_source').val(),
+			'cust_industry' : $('#cust_industry').val()
 		});
 	}
 	

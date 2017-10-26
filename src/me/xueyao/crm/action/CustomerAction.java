@@ -1,5 +1,7 @@
 package me.xueyao.crm.action;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -16,7 +18,7 @@ import me.xueyao.crm.domain.Customer;
 import me.xueyao.crm.service.CustomerService;
 @Controller("customerAction")
 @Scope("prototype")
-@ParentPackage("struts-default")
+@ParentPackage("json-default")
 @Namespace("/customer")
 public class CustomerAction extends ActionSupport implements ModelDriven<Customer> {
 
@@ -24,6 +26,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 
 	private Customer customer = new Customer();
 	
+	private List<Customer> customers; //存放对象
 	@Autowired
 	private CustomerService customerService;
 	
@@ -49,9 +52,28 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 		return SUCCESS;
 	}
 	
+	
+	/**
+	 * 处理查询所有客户请求的方法
+	 * @return
+	 */
+	@Action(value="customer_list",results={@Result(type="json",params={"root","customers"})})
+	public String list() {
+		customers = customerService.findAllCustomer();
+		//System.out.println(customers);
+
+		return SUCCESS;
+	}
+	
 	@Override
 	public Customer getModel() {
 		return customer;
 	}
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+	
+	
 
 }
