@@ -45,11 +45,20 @@
     	</property>
     	
     	<!-- 引入实体类 -->
+    	<!-- 
     	<property name="annotatedClasses">
     		<list>
     			<value>me.xueyao.crm.domain.SysUser</value>
+    			<value>me.xueyao.crm.domain.BaseDict</value>
     		</list>
     	</property>
+    	 -->
+    	 <!-- 指定扫描此包,该包下的实体类都会被找到，以后新加的实体类不用在此引入 -->
+    	 <property name="packagesToScan">
+    	 	<list>
+    	 		<value>me.xueyao.crm.domain</value>
+    	 	</list>
+    	 </property>
     </bean>  
     
     <!-- 配置事务管理 -->

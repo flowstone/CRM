@@ -8,9 +8,53 @@
 <LINK href="${pageContext.request.contextPath }/css/Style.css" type=text/css rel=stylesheet>
 <LINK href="${pageContext.request.contextPath }/css/Manage.css" type=text/css rel=stylesheet>
 <META content="MSHTML 6.00.2900.3492" name=GENERATOR>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//页面加载完成改善ajax请求
+		//查询所属行业
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath }/baseDict/baseDict_findByTypeCode.action",
+			data:"dict_type_code=001",//根据类型别号查询，所属行业的类型编号是001
+			dataType:"json",
+			success:function(msg){
+				for(var i=0; i<msg.length; i++) {
+					$("#cust_industry").append("<option value='"+msg[i].dict_id+"'>"+msg[i].dict_item_name+"</option>");
+				}
+			}
+		});
+		
+		//查询信息来源
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath }/baseDict/baseDict_findByTypeCode.action",
+			data:"dict_type_code=002",//根据类型别号查询，信息来源的类型编号是002
+			dataType:"json",
+			success:function(msg){
+				for(var i=0; i<msg.length; i++) {
+					$("#cust_source").append("<option value='"+msg[i].dict_id+"'>"+msg[i].dict_item_name+"</option>");
+				}
+			}
+		});
+		
+		//查询级别
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath }/baseDict/baseDict_findByTypeCode.action",
+			data:"dict_type_code=006",//根据类型别号查询，级别的类型编号是006
+			dataType:"json",
+			success:function(msg){
+				for(var i=0; i<msg.length; i++) {
+					$("#cust_level").append("<option value='"+msg[i].dict_id+"'>"+msg[i].dict_item_name+"</option>");
+				}
+			}
+		});
+	});
+</script>
 </HEAD>
 <BODY>
-	<FORM id=form1 name=form1 action="${pageContext.request.contextPath }/customer/CustomerServlet?method=addCustomer" method=post>
+	<FORM id=form1 name=form1 action="${pageContext.request.contextPath }/customer/customer_save.action" method=post>
 		<TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
 			<TBODY>
 				<TR>
@@ -43,24 +87,22 @@
 								</td>
 								<td>所属行业 ：</td>
 								<td>
-									<INPUT class=textbox id=sChannel2 style="WIDTH: 180px" maxLength=50 name="custIndustry">
+									<select name="cust_industry" class=textbox id=cust_industry style="WIDTH: 180px">
+										<option value="non">---请选择---</option>
+									</select>
 								</td>
 							</TR>							
 							<TR>	
 								<td>信息来源 ：</td>
 								<td>
-									<select name="custSource" class=textbox id=sChannel2 style="WIDTH: 180px">
+									<select name="cust_source" class=textbox id=cust_source style="WIDTH: 180px">
 										<option value="non">---请选择---</option>
-										<option value="6">电话营销</option>
-										<option value="7">网络营销</option>
 									</select>
 								</td>
 								<td>客户级别：</td>
 								<td>
-									<select name="custLevel" class=textbox id=sChannel2 style="WIDTH: 180px">
+									<select name="cust_level" class=textbox id=cust_level style="WIDTH: 180px">
 										<option value="non">---请选择---</option>
-										<option value="22">普通客户</option>
-										<option value="23">VIP客户</option>
 									</select>								
 								</td>
 							</TR>
