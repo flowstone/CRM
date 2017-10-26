@@ -83,11 +83,11 @@
 							<TR>
 								<td>客户名称：</td>
 								<td>
-									<INPUT class=textbox id=sChannel2 style="WIDTH: 180px" maxLength=50 name="custName">
+									<INPUT class=textbox id=cust_name style="WIDTH: 180px" maxLength=50 name="cust_name">
 								</td>
 								<td>所属行业 ：</td>
 								<td>
-									<select name="cust_industry" class=textbox id=cust_industry style="WIDTH: 180px">
+									<select name="baseDictIndustry.dict_id" class=textbox id=cust_industry style="WIDTH: 180px">
 										<option value="non">---请选择---</option>
 									</select>
 								</td>
@@ -95,13 +95,13 @@
 							<TR>	
 								<td>信息来源 ：</td>
 								<td>
-									<select name="cust_source" class=textbox id=cust_source style="WIDTH: 180px">
+									<select name="baseDictSource.dict_id" class=textbox id=cust_source style="WIDTH: 180px">
 										<option value="non">---请选择---</option>
 									</select>
 								</td>
 								<td>客户级别：</td>
 								<td>
-									<select name="cust_level" class=textbox id=cust_level style="WIDTH: 180px">
+									<select name="baseDictLevel.dict_id" class=textbox id=cust_level style="WIDTH: 180px">
 										<option value="non">---请选择---</option>
 									</select>								
 								</td>
@@ -109,11 +109,11 @@
 							<TR>
 								<td>联系地址 ：</td>
 								<td>
-									<INPUT class=textbox id=sChannel2 style="WIDTH: 180px" maxLength=50 name="custAddress">
+									<INPUT class=textbox id=cust_address style="WIDTH: 180px" maxLength=50 name="cust_address">
 								</td>
 								<td>联系电话 ：</td>
 								<td>
-									<INPUT class=textbox id=sChannel2 style="WIDTH: 180px" maxLength=50 name="custPhone">
+									<INPUT class=textbox id=cust_phone style="WIDTH: 180px" maxLength=50 name="cust_phone">
 								</td>
 							</TR>
 							<tr>

@@ -108,6 +108,14 @@ public class Customer implements Serializable {
 	public void setBaseDictLevel(BaseDict baseDictLevel) {
 		this.baseDictLevel = baseDictLevel;
 	}
+
+	@Override
+	public String toString() {
+		return "Customer [cust_id=" + cust_id + ", cust_name=" + cust_name + ", cust_phone=" + cust_phone
+				+ ", cust_address=" + cust_address + ", cust_image=" + cust_image + ", cust_filename=" + cust_filename
+				+ ", baseDictSource=" + baseDictSource + ", baseDictIndustry=" + baseDictIndustry + ", baseDictLevel="
+				+ baseDictLevel + "]";
+	}
 	
 	
 }
