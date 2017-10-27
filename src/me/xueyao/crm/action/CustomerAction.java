@@ -1,9 +1,12 @@
 package me.xueyao.crm.action;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -38,12 +41,41 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 	private int rows; //每页显示几条数据
 	//分页信息的封装
 	private Map<String,Object> pagination = new HashMap<String,Object>();
+	
+	//表示上传的文件，名字要与页面的file的name一致
+	private File upload;
+	private String uploadContentType; //表示上传文件的类型
+	private String uploadFileName; //表示上传文件的名字
 	/**
 	 * 处理客户保存请求
 	 * @return
 	 */
 	@Action(value="customer_save",results={@Result(location="/jsp/customer/list.jsp")})
 	public String save() {
+		
+		try {
+			FileUtils.copyFile(upload, new File("C:/upload/"+uploadFileName));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		/*//如果上传了文件就需要处理文件
+		if (null != upload) {
+			//生成文件的随机文件名
+			String randomFileName = UploadUtils.generateRandonFileName(uploadFileName);
+			//生成随机二级目录：/1/12
+			String randomDir = UploadUtils.generateRandomDir(randomFileName);
+			
+			try {
+				FileUtils.copyFile(upload, new File(SystemConstants.baseDir+randomDir+"/"+randomFileName));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			//设置图片保存的路径
+			customer.setCust_image(randomDir+"/"+randomFileName);
+			//设置图片原始名字
+			customer.setCust_filename(uploadFileName);
+		}
+		*/
 		//当新增页面选择了"--请选择--"这一项，报违反外键约束
 		//当选择"--请选择--"时，customer.getBaseDictIndustry().getDict_id的值""
 		//就会把""保存到表中，违反外键约束；所以当为"",就设置为null

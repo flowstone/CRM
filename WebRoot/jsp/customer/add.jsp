@@ -54,7 +54,7 @@
 </script>
 </HEAD>
 <BODY>
-	<FORM id=form1 name=form1 action="${pageContext.request.contextPath }/customer/customer_save.action" method=post>
+	<FORM id=form1 name=form1 action="${pageContext.request.contextPath }/customer/customer_save.action" method="post" enctype="multipart/form-data">
 		<TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
 			<TBODY>
 				<TR>
@@ -117,8 +117,14 @@
 								</td>
 							</TR>
 							<tr>
+								<td>资质图片</td>
+								<td colspan="3">
+									<input type="file" name="upload" />
+								</td>
+							</tr>
+							<tr>
 								<td rowspan=2>
-									<INPUT class=button id=sButton2 type=submit value=" 保存 " name=sButton2>
+									<INPUT class=button id=sButton2 type=submit value="保存 " name=sButton2>
 								</td>
 							</tr>
 						</TABLE>
