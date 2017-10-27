@@ -36,5 +36,11 @@ public interface CustomerService {
 	 */
 	public List<Customer> findByPage(DetachedCriteria dc, int i, int rows);
 
+	/**
+	 *根据id 删除客户
+	 * @param cust_id
+	 */
+	public void delete(Integer cust_id);
+
 
 }

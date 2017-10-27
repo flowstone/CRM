@@ -151,6 +151,12 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 		return SUCCESS;
 	}
 	
+	@Action(value="customer_delete",results={@Result(name="success",location="/jsp/customer/list.jsp")})
+	public String delete() {
+		customerService.delete(customer.getCust_id());
+		return SUCCESS;
+	}
+	
 	@Override
 	public Customer getModel() {
 		return customer;

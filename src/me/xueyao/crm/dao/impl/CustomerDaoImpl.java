@@ -44,4 +44,14 @@ public class CustomerDaoImpl implements CustomerDao {
 		return list;
 	}
 
+	@Override
+	public Customer findById(Integer cust_id) {
+		return hibernateTemplate.get(Customer.class, cust_id);
+	}
+
+	@Override
+	public void delete(Customer customer) {
+		hibernateTemplate.delete(customer);
+	}
+
 }

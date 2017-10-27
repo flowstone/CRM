@@ -36,4 +36,17 @@ public interface CustomerDao {
 	 */
 	public List<Customer> findByPage(DetachedCriteria dc, int i, int rows);
 
+	/**
+	 * 根据id查询客户
+	 * @param cust_id
+	 * @return
+	 */
+	public Customer findById(Integer cust_id);
+
+	/**
+	 * 删除客户
+	 * @param customer
+	 */
+	public void delete(Customer customer);
+
 }

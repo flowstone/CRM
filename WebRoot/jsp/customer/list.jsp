@@ -135,7 +135,18 @@
 	
 	//删除客户函数
 	function destroyCustomer(){
-		location.href="#";
+		//获取当前选中行
+		var row = $("#dg").datagrid('getSelected');
+		//如果选中了某一行
+		if (row) {
+			$.messager.confirm("系统消息","您确认要删除记录吗",function(r) {
+				if (r) {
+					location.href="${pageContext.request.contextPath}/customer/customer_delete.action?cust_id="+row.cust_id;
+				}
+			});
+		} else {
+			$.messager.alert("系统消息","请选中一行");
+		}
 	}
 </script>
 </HEAD>
