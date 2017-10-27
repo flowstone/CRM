@@ -18,4 +18,18 @@ public interface CustomerDao {
 	 */
 	public List<Customer> findAll();
 
+	/**
+	 * 查询客户表总记录数
+	 * @return
+	 */
+	public int findCount();
+
+	/**
+	 * 分页查询客户表
+	 * @param i
+	 * @param rows
+	 * @return
+	 */
+	public List<Customer> findByPage(int i, int rows);
+
 }

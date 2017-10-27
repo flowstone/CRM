@@ -40,7 +40,7 @@
 		$('#dg')
 				.datagrid(
 						{
-							url : '${pageContext.request.contextPath}/customer/customer_list.action',
+							url : '${pageContext.request.contextPath}/customer/customer_findByPage.action',
 							columns : [ [ {
 								field : 'cust_name',
 								title : '客户名称',
@@ -69,6 +69,9 @@
 								title : '联系电话',
 								width:100
 							} ] ],
+							pagination:true,//显示分布工具栏
+							pageList:[3,5,10],//每页显示多少条数据集合
+							pageSize:3, //默认每页显示3条
 							fitColumns:true
 						});
 		//查询所属行业
@@ -118,9 +121,9 @@
 	function doSearch() {
 		$('#dg').datagrid('load', {
 			'cust_name' : $('#cust_name').val(),
-			'cust_level' : $('#cust_level').val(),
-			'cust_source' : $('#cust_source').val(),
-			'cust_industry' : $('#cust_industry').val()
+			'baseDictlevel.dict_id' : $('#cust_level').val(),
+			'baseDictSource.dict_id' : $('#cust_source').val(),
+			'baseDictIndustry.dict_id' : $('#cust_industry').val()
 		});
 	}
 	

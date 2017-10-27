@@ -18,4 +18,18 @@ public interface CustomerService {
 	 */
 	public List<Customer> findAllCustomer();
 
+	/**
+	 * 查询客户表总记录数
+	 * @return
+	 */
+	public int findCount();
+
+	/**
+	 * 分页查询客户表
+	 * @param i  开始查询的位置索引
+	 * @param rows 每页查询的最大记录数
+	 * @return
+	 */
+	public List<Customer> findByPage(int i, int rows);
+
 }

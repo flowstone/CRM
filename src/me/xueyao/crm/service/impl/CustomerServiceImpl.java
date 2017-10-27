@@ -28,5 +28,17 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<Customer> findAllCustomer() {
 		return customerDao.findAll();
 	}
+	
+	@Transactional(readOnly=true)
+	@Override
+	public int findCount() {
+		return customerDao.findCount();
+	}
+
+	@Transactional(readOnly=true)
+	@Override
+	public List<Customer> findByPage(int i, int rows) {
+		return customerDao.findByPage(i,rows);
+	}
 
 }

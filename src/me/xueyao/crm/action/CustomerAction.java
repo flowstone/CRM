@@ -1,12 +1,16 @@
 package me.xueyao.crm.action;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -30,6 +34,10 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 	@Autowired
 	private CustomerService customerService;
 	
+	private int page; //当前页码
+	private int rows; //每页显示几条数据
+	//分页信息的封装
+	private Map<String,Object> pagination = new HashMap<String,Object>();
 	/**
 	 * 处理客户保存请求
 	 * @return
@@ -65,6 +73,48 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 		return SUCCESS;
 	}
 	
+	@Action(value="customer_findByPage",results={@Result(type="json",params={"root","pagination"})})
+	public String findByPage() {
+		//构造离线查询对象
+		DetachedCriteria dc = DetachedCriteria.forClass(Customer.class);
+		//拼接条件开始
+		if (StringUtils.isNotBlank(customer.getCust_name())) {
+			dc.add(Restrictions.eq("cust_name",customer.getCust_name()));
+		}
+		
+		/**
+		 * 当用户点击的是左边菜单栏中的客户列表链接，没有发送级别参数，
+		 * customer.getBaseDictLevel()为空
+		 * 如果直接cutomer.getBaseDictLevel();
+		 * 所以，需要先判断cutomer.getBaseDictLevel()是否空，后边来源，行业同理
+		 */
+		if (null != customer.getBaseDictLevel()) {
+			if (StringUtils.isNotBlank(customer.getBaseDictLevel().getDict_id())) {
+				dc.add(Restrictions.eq("baseDictLevel.dict_id",customer.getBaseDictLevel().getDict_id()));
+			}
+		}
+		
+		if (null != customer.getBaseDictSource()) {
+			if (StringUtils.isNotBlank(customer.getBaseDictSource().getDict_id())) {
+				dc.add(Restrictions.eq("baseDictSource.dict_id",customer.getBaseDictSource().getDict_id()));
+			}
+		}
+		
+		if (null != customer.getBaseDictIndustry()) {
+			if (StringUtils.isNotBlank(customer.getBaseDictIndustry().getDict_id())) {
+				dc.add(Restrictions.eq("baseDictSource.dict_id",customer.getBaseDictIndustry().getDict_id()));
+			}
+		}
+		//拼接条件结束
+		int total = customerService.findCount();
+		//设置总记录数到pagination中，key一定要是total
+		pagination.put("total", total); 
+		List<Customer> list = customerService.findByPage((page-1)* rows, rows);
+		//设置当前页的数据集合到pagination中，key一定要是rows
+		pagination.put("rows",list);
+		return SUCCESS;
+	}
+	
 	@Override
 	public Customer getModel() {
 		return customer;
@@ -72,6 +122,21 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 
 	public List<Customer> getCustomers() {
 		return customers;
+	}
+
+
+	public Map<String, Object> getPagination() {
+		return pagination;
+	}
+
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+
+	public void setRows(int rows) {
+		this.rows = rows;
 	}
 	
 	
