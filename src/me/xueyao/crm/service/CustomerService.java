@@ -2,6 +2,8 @@ package me.xueyao.crm.service;
 
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import me.xueyao.crm.domain.Customer;
 
 public interface CustomerService {
@@ -20,16 +22,19 @@ public interface CustomerService {
 
 	/**
 	 * 查询客户表总记录数
+	 * @param dc 
 	 * @return
 	 */
-	public int findCount();
+	public int findCount(DetachedCriteria dc);
 
 	/**
 	 * 分页查询客户表
+	 * @param dc 
 	 * @param i  开始查询的位置索引
 	 * @param rows 每页查询的最大记录数
 	 * @return
 	 */
-	public List<Customer> findByPage(int i, int rows);
+	public List<Customer> findByPage(DetachedCriteria dc, int i, int rows);
+
 
 }

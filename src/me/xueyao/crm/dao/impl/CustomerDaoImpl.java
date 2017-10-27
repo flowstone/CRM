@@ -3,6 +3,7 @@ package me.xueyao.crm.dao.impl;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,15 +28,18 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public int findCount() {
-		List<Long> list = (List<Long>) hibernateTemplate.find("SELECT COUNT(1) FROM Customer");
+	public int findCount(DetachedCriteria dc) {
+		//设置projection，表示要查询总记录数
+		dc.setProjection(Projections.rowCount());
+		List<Long> list = (List<Long>) hibernateTemplate.findByCriteria(dc);
 		return list.get(0).intValue();
 	}
 
 	@Override
-	public List<Customer> findByPage(int i, int rows) {
-		//构造离线查询对象
-		DetachedCriteria dc = DetachedCriteria.forClass(Customer.class);
+	public List<Customer> findByPage(DetachedCriteria dc, int i, int rows) {
+		//清空之前设置查询总行数的信息
+		dc.setProjection(null);
+		//查询分页数据
 		List<Customer> list = (List<Customer>) hibernateTemplate.findByCriteria(dc, i, rows);
 		return list;
 	}

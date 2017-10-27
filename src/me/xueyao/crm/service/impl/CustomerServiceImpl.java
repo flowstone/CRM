@@ -2,6 +2,7 @@ package me.xueyao.crm.service.impl;
 
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,14 +32,18 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Transactional(readOnly=true)
 	@Override
-	public int findCount() {
-		return customerDao.findCount();
+	public int findCount(DetachedCriteria dc) {
+		return customerDao.findCount(dc);
 	}
-
+	
+	
 	@Transactional(readOnly=true)
 	@Override
-	public List<Customer> findByPage(int i, int rows) {
-		return customerDao.findByPage(i,rows);
+	public List<Customer> findByPage(DetachedCriteria dc, int i, int rows) {
+		return customerDao.findByPage(dc,i,rows);
 	}
+
+	
+	
 
 }

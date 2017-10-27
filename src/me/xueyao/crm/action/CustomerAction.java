@@ -73,6 +73,10 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 		return SUCCESS;
 	}
 	
+	/**
+	 * 分页
+	 * @return
+	 */
 	@Action(value="customer_findByPage",results={@Result(type="json",params={"root","pagination"})})
 	public String findByPage() {
 		//构造离线查询对象
@@ -102,14 +106,14 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 		
 		if (null != customer.getBaseDictIndustry()) {
 			if (StringUtils.isNotBlank(customer.getBaseDictIndustry().getDict_id())) {
-				dc.add(Restrictions.eq("baseDictSource.dict_id",customer.getBaseDictIndustry().getDict_id()));
+				dc.add(Restrictions.eq("baseDictIndustry.dict_id",customer.getBaseDictIndustry().getDict_id()));
 			}
 		}
 		//拼接条件结束
-		int total = customerService.findCount();
+		int total = customerService.findCount(dc);
 		//设置总记录数到pagination中，key一定要是total
 		pagination.put("total", total); 
-		List<Customer> list = customerService.findByPage((page-1)* rows, rows);
+		List<Customer> list = customerService.findByPage(dc, (page-1)* rows, rows);
 		//设置当前页的数据集合到pagination中，key一定要是rows
 		pagination.put("rows",list);
 		return SUCCESS;

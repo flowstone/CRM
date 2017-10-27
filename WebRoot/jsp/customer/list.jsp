@@ -121,7 +121,7 @@
 	function doSearch() {
 		$('#dg').datagrid('load', {
 			'cust_name' : $('#cust_name').val(),
-			'baseDictlevel.dict_id' : $('#cust_level').val(),
+			'baseDictLevel.dict_id' : $('#cust_level').val(),
 			'baseDictSource.dict_id' : $('#cust_source').val(),
 			'baseDictIndustry.dict_id' : $('#cust_industry').val()
 		});
