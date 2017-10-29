@@ -6,6 +6,10 @@ import org.hibernate.criterion.DetachedCriteria;
 
 import me.xueyao.crm.domain.Customer;
 
+/**
+ * @author XueYao
+ *
+ */
 public interface CustomerService {
 
 	/**
@@ -41,6 +45,14 @@ public interface CustomerService {
 	 * @param cust_id
 	 */
 	public void delete(Integer cust_id);
+
+	
+	/**
+	 * 根据id查询客户
+	 * @param cust_id
+	 * @return
+	 */
+	public Customer findById(Integer cust_id);
 
 
 }

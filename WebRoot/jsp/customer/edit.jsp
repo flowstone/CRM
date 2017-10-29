@@ -1,5 +1,6 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="/struts-tags"  prefix="s"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,9 +9,65 @@
 <LINK href="${pageContext.request.contextPath }/css/Style.css" type=text/css rel=stylesheet>
 <LINK href="${pageContext.request.contextPath }/css/Manage.css" type=text/css rel=stylesheet>
 <META content="MSHTML 6.00.2900.3492" name=GENERATOR>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//页面加载完成发送ajax请求
+		//查询所属行业
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath }/baseDict/baseDict_findByTypeCode.action",
+			data:"dict_type_code=001",
+			dataType:"json",
+			success:function(msg) {
+				for (var i = 0; i < msg.length; i++) {
+					if (msg[i].dict_id == "<s:property value='"+viewCustomer.baseDictIndustry.dict_id+"'/>") {
+						$("#cust_industry").append("<option value='"+msg[i].dict_id+"' selected='selected'>"+msg[i].dict_item_name+"</option>");
+					} else {
+						$("#cust_industry").append("<option value='"+msg[i].dict_id+"'>"+mgs[i].dict_item_name+"</option>");
+					}
+				}
+			}
+		});
+		
+		//查询信息来源
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath }/baseDict/baseDict_findByTypeCode.action",
+			data:"dict_type_code=002",
+			dataType:"json",
+			success:function(msg) {
+				for (var i = 0; i < msg.length; i++) {
+					if (msg[i].dict_id == "<s:property value='"+viewCustomer.baseDictSource.dict_id+"'/>") {
+						$("#cust_source").append("<option value='"+msg[i].dict_id+"' selected='selected'>"+msg[i].dict_item_name+"</option>");
+					} else {
+						$("#cust_source").append("<option value='"+msg[i].dict_id+"'>"+mgs[i].dict_item_name+"</option>");
+					}
+				}
+			}
+		});
+		
+		//查询级别
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath }/baseDict/baseDict_findByTypeCode.action",
+			data:"dict_type_code=006",
+			dataType:"json",
+			success:function(msg) {
+				for (var i = 0; i < msg.length; i++) {
+					if (msg[i].dict_id == "<s:property value='"+viewCustomer.baseDictLevel.dict_id+"'/>") {
+						$("#cust_level").append("<option value='"+msg[i].dict_id+"' selected='selected'>"+msg[i].dict_item_name+"</option>");
+					} else {
+						$("#cust_level").append("<option value='"+msg[i].dict_id+"'>"+mgs[i].dict_item_name+"</option>");
+					}
+				}
+			}
+		});
+	});
+</script>
 </HEAD>
 <BODY>
-	<FORM id=form1 name=form1 action="${pageContext.request.contextPath }customer/CustomerServlet?method=editCustomer" method=post>
+	<FORM id=form1 name=form1 action="${pageContext.request.contextPath }customer/customer_update.action" method=post>
 		<input type="hidden" name="custId" value="${customer.custId}">
 		<TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
 			<TBODY>

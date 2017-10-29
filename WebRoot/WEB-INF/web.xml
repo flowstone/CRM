@@ -34,6 +34,11 @@
 		<param-name>struts.devMode</param-name>
 		<param-value>true</param-value>
 	</init-param>
+	<!-- 配置自定义资源文件，value写的是资源文件的基础名，不带properties后续名 -->
+	<init-param>
+		<param-name>struts.custom.i18n.resources</param-name>
+		<param-value>messageResource</param-value>
+	</init-param>
   	<!-- 限定一次请求的所有文件的总大小不能超过20M -->
   	<init-param>
   		<param-name>struts.multipart.maxSize</param-name>

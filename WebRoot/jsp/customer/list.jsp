@@ -130,7 +130,15 @@
 	
 	//编辑客户函数
 	function editCustomer(){
-		location.href="#";
+		var row = $("#dg").datagrid('getSelected');
+		if (row) {
+			if (row) {
+				location.href="${pageContext.request.contextPath}/customer/customer_findById.action?cust_id="+row.cust_id;
+			}
+		} else {
+			$.messager.alert("系统消息","请选中一行");
+		}
+		
 	}
 	
 	//删除客户函数

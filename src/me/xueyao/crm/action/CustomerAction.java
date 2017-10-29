@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
@@ -23,6 +24,9 @@ import com.opensymphony.xwork2.ModelDriven;
 
 import me.xueyao.crm.domain.Customer;
 import me.xueyao.crm.service.CustomerService;
+import me.xueyao.crm.utils.SystemConstants;
+import me.xueyao.crm.utils.UploadUtils;
+
 @Controller("customerAction")
 @Scope("prototype")
 @ParentPackage("json-default")
@@ -46,36 +50,36 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 	private File upload;
 	private String uploadContentType; //表示上传文件的类型
 	private String uploadFileName; //表示上传文件的名字
+	
+	//存放查询出来的对象，并提供get方法
+	private Customer viewCustomer;
+	
 	/**
 	 * 处理客户保存请求
 	 * @return
 	 */
-	@Action(value="customer_save",results={@Result(location="/jsp/customer/list.jsp")})
+	@Action(value="customer_save",results={@Result(location="/jsp/customer/list.jsp"),@Result(name="input",location="/jsp/customer/add.jsp")}, 
+			interceptorRefs = {@InterceptorRef(value="defaultStack",params={"fileUpload.maximumSize","10485760","fileUpload.allowedExtensions",".jpg,.png"})})
 	public String save() {
-		
-		try {
-			FileUtils.copyFile(upload, new File("C:/upload/"+uploadFileName));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		/*//如果上传了文件就需要处理文件
+		//如果上传了文件就需要处理文件
 		if (null != upload) {
-			//生成文件的随机文件名
+			//生成随机文件名
 			String randomFileName = UploadUtils.generateRandonFileName(uploadFileName);
-			//生成随机二级目录：/1/12
+			//生成随机二级目录：例如：/1/2
 			String randomDir = UploadUtils.generateRandomDir(randomFileName);
-			
 			try {
-				FileUtils.copyFile(upload, new File(SystemConstants.baseDir+randomDir+"/"+randomFileName));
+				//文件复制
+				FileUtils.copyFile(upload, new File(SystemConstants.baseDir+randomDir+"/"+uploadFileName));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			//设置图片保存的路径
-			customer.setCust_image(randomDir+"/"+randomFileName);
-			//设置图片原始名字
+			//设置真实文件名
 			customer.setCust_filename(uploadFileName);
+			//设置文件保存路径
+			customer.setCust_image(randomDir+"/"+randomFileName);
+			
 		}
-		*/
+		
 		//当新增页面选择了"--请选择--"这一项，报违反外键约束
 		//当选择"--请选择--"时，customer.getBaseDictIndustry().getDict_id的值""
 		//就会把""保存到表中，违反外键约束；所以当为"",就设置为null
@@ -151,12 +155,25 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 		return SUCCESS;
 	}
 	
+	/**
+	 * 删除客户
+	 * @return
+	 */
 	@Action(value="customer_delete",results={@Result(name="success",location="/jsp/customer/list.jsp")})
 	public String delete() {
 		customerService.delete(customer.getCust_id());
 		return SUCCESS;
 	}
 	
+	/**
+	 * 根据id查询客户
+	 * @return
+	 */
+	@Action(value="customer_findById",results={@Result(name="success",location="/jsp/customer/edit.jsp")})
+	public String findById() {
+		viewCustomer = customerService.findById(customer.getCust_id());
+		return SUCCESS;
+	}
 	@Override
 	public Customer getModel() {
 		return customer;
@@ -171,7 +188,10 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 		return pagination;
 	}
 
-
+	public Customer getViewCustomer() {
+		return viewCustomer;
+	}
+	
 	public void setPage(int page) {
 		this.page = page;
 	}
@@ -181,6 +201,19 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 		this.rows = rows;
 	}
 	
-	
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
+
+
+	public void setUploadContentType(String uploadContentType) {
+		this.uploadContentType = uploadContentType;
+	}
+
+
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
+
 
 }

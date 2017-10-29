@@ -1,5 +1,6 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -80,6 +81,15 @@
 							</TR>
 						</TABLE>						
 						<TABLE cellSpacing=0 cellPadding=5  border=0>
+							<tr>
+								<td colspan="4">
+									<font color="red">
+										<!-- 取出文件大小超过常量信息的 -->
+										<s:actionerror/>
+										<s:fielderror></s:fielderror>
+									</font>
+								</td>
+							</tr>
 							<TR>
 								<td>客户名称：</td>
 								<td>
@@ -117,7 +127,7 @@
 								</td>
 							</TR>
 							<tr>
-								<td>资质图片</td>
+								<td>上传资质图片</td>
 								<td colspan="3">
 									<input type="file" name="upload" />
 								</td>
